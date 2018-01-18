@@ -55,6 +55,19 @@ int main() {
 
   gnb.train(X_train, Y_train);
 
+  /* vector<string> features = {"s", "d", "sdot", "ddot"}; */
+
+  /* for (int i = 0; i < gnb.label_names.size(); i++) { */
+  /*   cout << gnb.label_names[i] << endl; */
+  /*   for (int j = 0; j < gnb.stats[gnb.label_names[i]].size(); j++) { */
+  /*     cout << features[j] << ": "; */
+  /*     cout << gnb.stats[gnb.label_names[i]][j][0] << ", " << gnb.stats[gnb.label_names[i]][j][1] << endl; */
+  /*   } */
+  /*   cout << "---------------" << endl; */
+  /*   cout << endl; */
+  /* } */
+  /* cout << gnb.total_samples << endl; */
+
   cout << "X_test number of elements " << X_test.size() << endl;
   cout << "X_test element size " << X_test[0].size() << endl;
   cout << "Y_test number of elements " << Y_test.size() << endl;

@@ -9,13 +9,17 @@
 using namespace std;
 
 GNB::GNB() {
-  // Initializing the distributions
-  for (int i = 0; i < labels.size(); i++) {
-    distributions[labels[i]] = {{0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}};
+  // Initializing stats
+  for (int i = 0; i < label_names.size(); i++) {
+    stats[label_names[i]] = {{0,0}, {0,0}, {0,0}};
   }
 }
 
 GNB::~GNB() {}
+
+double GNB::normal_pdf(double v, double m, double s) {
+  return 1/sqrt(2*M_PI*pow(s,2))*exp(-pow((v-m),2)/(2*pow(s,2)));
+}
 
 void GNB::train(vector<vector<double>> data, vector<string> labels) {
   /*
@@ -23,7 +27,7 @@ void GNB::train(vector<vector<double>> data, vector<string> labels) {
    *  for accurately calculating running mean and variance
    *   Mk = Mk-1+ (xk – Mk-1)/k
    *   Sk = Sk-1 + (xk – Mk-1)*(xk – Mk)
-   * 
+   *
    *  Trains the classifier with N data points and labels.
    *
    *  INPUTS
@@ -39,44 +43,78 @@ void GNB::train(vector<vector<double>> data, vector<string> labels) {
    *    - Each label is one of "left", "keep", or "right".
    */
 
-  for (int i = 0; i < data.size(); i++) {
+  total_samples = data.size();
+
+  for (int i = 0; i < total_samples; i++) {
+    vector<double> obs = {fmod(data[i][1],4), data[i][2], data[i][3]};
     string label = labels[i];
-    vector<double> obs = data[i];
+    label_counts[label] += 1;
 
-    for (int j = 0; j < distributions[label].size(); j++) {
-      float count = distributions[label][j][0] + 1;
-      float mean  = distributions[label][j][1];
-      float stdd  = distributions[label][j][2];
+    for (int j = 0; j < obs.size(); j++) {
+      double new_mean;
+      double new_ms;
+      if (label_counts[label] == 1) {
+        new_mean = obs[j];
+        new_ms = 0;
+      } else {
+        double mean  = stats[label][j][0];
+        double ms  = stats[label][j][1];
+        new_mean = mean + (obs[j] - mean) / label_counts[label];
+        new_ms = ms + (obs[j] - mean)*(obs[j] - new_mean);
+      }
 
-      float new_mean = mean + (obs[j] - mean) / count;
-      float new_stdd = stdd + (obs[j] - mean)*(obs[j] - new_mean);
-
-      distributions[label][j][0] = count;
-      distributions[label][j][1] = new_mean;
-      distributions[label][j][2] = new_stdd;
+      stats[label][j][0] = new_mean;
+      stats[label][j][1] = new_ms;
     }
   }
 
+  for (int i = 0; i < label_names.size(); i++) {
+    string label = label_names[i];
+    for (int j = 0; j < stats[label].size(); j++) {
+      double sig = sqrt((stats[label][j][1] / (label_counts[label] - 1)));
+      /* cout << sig << endl; */
+      stats[label][j][1] = sig;
+    }
+  }
 }
 
 string GNB::predict(vector<double> sample) {
   /*
-     Once trained, this method is called and expected to return
-     a predicted behavior for the given observation.
+   * Once trained, this method is called and expected to return
+   * a predicted behavior for the given observation.
+   *
+   * INPUTS
+   * Observation - a 4 tuple with s, d, s_dot, d_dot.
+   *  example: [3.5, 0.1, 8.5, -0.2]
+   *
+   * OUTPUT
+   * Label representing the best guess of the classifier.
+   * Can be one of "left", "keep" or "right".
+   */
 
-     INPUTS
+  /* vector<double> obs = sample; // {sample[1], sample[2], sample[3]}; */
+  vector<double> obs = {fmod(sample[1],4), sample[2], sample[3]};
 
-     observation - a 4 tuple with s, d, s_dot, d_dot.
-     - Example: [3.5, 0.1, 8.5, -0.2]
+  // No need to normalize, just picking the top
 
-     OUTPUT
+  double bestProd = 0;
+  int bestLabel = 0;
 
-     A label representing the best guess of the classifier. Can
-     be one of "left", "keep" or "right".
-     """
-    TODO - complete this
-  */
+  for (int i = 0; i < label_names.size(); i++) {
+    string label = label_names[i];
 
-  return labels[1];
+    double product = 1;
+    for (int j = 0; j < obs.size(); j++) {
+      product *= normal_pdf(obs[j], stats[label][j][0], stats[label][j][1]);
+    }
+
+    if (product > bestProd) {
+      bestProd = product;
+      bestLabel = i;
+    }
+  }
+
+  /* cout << label_names[bestLabel] << ": " << sample[1] << "," << sample[2] << "," << sample[3] << endl; */
+  return label_names[bestLabel];
 }
 

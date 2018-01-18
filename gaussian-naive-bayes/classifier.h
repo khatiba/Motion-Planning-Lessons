@@ -13,20 +13,30 @@ using namespace std;
 class GNB {
   public:
 
-    vector<string> labels = {"left", "keep", "right"};
+    vector<string> label_names = {"left", "keep", "right"};
+
+    double total_samples = 0;
+
+    map<string, double> label_counts = {
+      {"left", 0},
+      {"keep", 0},
+      {"right", 0},
+    };
 
     /*
      * For each class:
-     *       s       |      d       |    sdot      |    ddot
-     *  {#, mu, sig} | {#, mu, sig} | {#, mu, sig} | {#, mu, sig}
+     *     s    |    d    |   sdot  |   ddot
+     *  {mu, s} | {mu, s} | {mu, s} | {mu, s}
      */
-    map<string, vector<vector<float>>> distributions;
+    map<string, vector<vector<double>>> stats;
 
     GNB();
 
     virtual ~GNB();
 
     void train(vector<vector<double> > data, vector<string>  labels);
+
+    double normal_pdf(double v, double mu, double stdd);
 
     string predict(vector<double>);
 };
