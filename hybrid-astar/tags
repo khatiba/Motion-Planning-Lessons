@@ -1,0 +1,37 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+GOAL	main.cpp	/^vector<int> GOAL = {(int)GRID.size()-1, (int)GRID[0].size()-1};$/;"	v
+GRID	main.cpp	/^vector<vector<int>> GRID = MAZE;$/;"	v
+HBF	hybrid_breadth_first.cpp	/^HBF::HBF() {}$/;"	f	class:HBF
+HBF	hybrid_breadth_first.h	/^class HBF {$/;"	c
+HEURISTIC	main.cpp	/^vector<vector<int>> HEURISTIC = GRID;$/;"	v
+HYBRID_BREADTH_FIRST_H_	hybrid_breadth_first.h	/^#define HYBRID_BREADTH_FIRST_H_$/;"	d
+LENGTH	hybrid_breadth_first.h	/^  double LENGTH = 0.5;$/;"	m	class:HBF
+LENGTH	main.cpp	/^double LENGTH = 0.5;$/;"	v
+MAZE	main.cpp	/^vector<vector<int>> MAZE = {$/;"	v
+NUM_THETA_CELLS	hybrid_breadth_first.h	/^  int NUM_THETA_CELLS = 90;$/;"	m	class:HBF
+SPEED	hybrid_breadth_first.h	/^  double SPEED = 1.45;$/;"	m	class:HBF
+SPEED	main.cpp	/^double SPEED = 1.45;$/;"	v
+START	main.cpp	/^vector<double> START = {0.0,0.0,0.0};$/;"	v
+X	main.cpp	/^int X = 1;$/;"	v
+_	main.cpp	/^int _ = 0;$/;"	v
+came_from	hybrid_breadth_first.h	/^    vector< vector< vector<maze_s> > > came_from;$/;"	m	struct:HBF::maze_path
+closed	hybrid_breadth_first.h	/^    vector< vector< vector<int> > > closed;$/;"	m	struct:HBF::maze_path
+expand	hybrid_breadth_first.cpp	/^vector<HBF::maze_s> HBF::expand(HBF::maze_s state) {$/;"	f	class:HBF
+final	hybrid_breadth_first.h	/^    maze_s final;$/;"	m	struct:HBF::maze_path
+g	hybrid_breadth_first.h	/^    int g;	\/\/ iteration$/;"	m	struct:HBF::maze_s
+idx	hybrid_breadth_first.cpp	/^int HBF::idx(double float_num) {$/;"	f	class:HBF
+main	main.cpp	/^int main() {$/;"	f
+maze_path	hybrid_breadth_first.h	/^  struct maze_path {$/;"	s	class:HBF
+maze_s	hybrid_breadth_first.h	/^  struct maze_s {$/;"	s	class:HBF
+reconstruct_path	hybrid_breadth_first.cpp	/^vector< HBF::maze_s> HBF::reconstruct_path(vector< vector< vector<HBF::maze_s> > > came_from, vector<double> start, HBF::maze_s final){$/;"	f	class:HBF
+search	hybrid_breadth_first.cpp	/^HBF::maze_path HBF::search(vector< vector<int> > grid, vector<double> start, vector<int> goal) {$/;"	f	class:HBF
+theta	hybrid_breadth_first.h	/^    double theta;$/;"	m	struct:HBF::maze_s
+theta_to_stack_number	hybrid_breadth_first.cpp	/^int HBF::theta_to_stack_number(double theta){$/;"	f	class:HBF
+x	hybrid_breadth_first.h	/^    double x;$/;"	m	struct:HBF::maze_s
+y	hybrid_breadth_first.h	/^    double y;$/;"	m	struct:HBF::maze_s
+~HBF	hybrid_breadth_first.cpp	/^HBF::~HBF() {}$/;"	f	class:HBF
